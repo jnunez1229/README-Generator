@@ -6,7 +6,7 @@ const questions =
 [
   {
     type: 'input',
-    name: 'title',
+    name: 'username',
     message: 'What is your github username?',
     validate: nameInput => {
       if (nameInput) {
@@ -19,7 +19,7 @@ const questions =
   },
   {
     type: 'input',
-    name: 'title',
+    name: 'email',
     message: 'What is your Email address?',
     validate: nameInput => {
       if (nameInput) {
@@ -46,7 +46,7 @@ const questions =
   {
     type: 'input',
     name: 'description',
-    message: 'Provide a description of the project (Required)',
+    message: 'Provide a description of the project.',
     validate: nameInput => {
         if (nameInput) {
           return true;
@@ -54,43 +54,36 @@ const questions =
           console.log('Please enter a description of your project!');
           return false;
         }
-      }   
-    },
+    }   
+  },
   {
     type: 'input',
+    name: 'deployed-site',
+    message: 'Provide a link to the deployed site. (Be sure to add http:// or https:// in front of the address)',
+    validate: nameInput => {
+        if (nameInput) {
+          return true;
+        } else {
+          console.log('Please enter your deployed link');
+          return false;
+        }
+    }   
+  },
+  {
+    type: 'list',
     name: 'license',
     message: 'What license should your project have?',
-    validate: nameInput => {
-        if (nameInput) {
-          return true;
-        } else {
-          console.log('Please enter a license!');
-          return false;
-        }
-    }   
+    choices:['MIT', 'Apache', 'GPL']  
   },
   {
     type: 'input',
-    name: 'dependencies',
-    message: 'What command is needed to install dependencies?',
+    name: 'contribution',
+    message: 'Please enter information on how the user can contribute the repo.',
     validate: nameInput => {
         if (nameInput) {
           return true;
         } else {
-          console.log('Please enter a command!');
-          return false;
-        }
-    }   
-  },
-  {
-    type: 'input',
-    name: 'tests',
-    message: 'What command is needed to run tests?',
-    validate: nameInput => {
-        if (nameInput) {
-          return true;
-        } else {
-          console.log('Please enter a command!');
+          console.log('Please enter contribution information!');
           return false;
         }
     }   
@@ -107,20 +100,7 @@ const questions =
           return false;
         }
     }   
-  },
-  {
-    type: 'input',
-    name: 'contribution',
-    message: 'Please enter information on how user can contribute the repo.',
-    validate: nameInput => {
-        if (nameInput) {
-          return true;
-        } else {
-          console.log('Please enter contribution information!');
-          return false;
-        }
-    }   
-  },
+  }
 ];
 
 // TODO: Create a function to write README file

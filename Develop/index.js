@@ -1,6 +1,8 @@
 // TODO: Include packages needed for this application
+const { rejects } = require('assert');
 const fs = require('fs');
 const inquirer = require('inquirer');
+const { resolve } = require('path');
 const generateMarkdown = require('./utils/generateMarkdown.js')
 // TODO: Create an array of questions for user input
 const questions =
@@ -59,7 +61,7 @@ const questions =
   },
   {
     type: 'input',
-    name: 'deployed-site',
+    name: 'deployedSite',
     message: 'Provide a link to the deployed site. (Be sure to add http:// or https:// in front of the address)',
     validate: nameInput => {
         if (nameInput) {
@@ -91,7 +93,7 @@ const questions =
   },
   {
     type: 'input',
-    name: 'repo-info',
+    name: 'userInfo',
     message: 'Please enter information on how user can use the repo.',
     validate: nameInput => {
         if (nameInput) {
@@ -105,7 +107,19 @@ const questions =
 ];
 
 // TODO: Create a function to write README file
-function writeToFile(fileName, data) {}
+function writeToFile(fileName, data) {
+  fs.writeFile(`${fileName}.md`, data, err => {
+    if(err){
+      reject(err);
+      return;
+    }
+
+    resolve({
+      ok: true,
+      message: 'Readme created!'
+    }
+  )}
+)}
 
 // TODO: Create a function to initialize app
 function init() {
@@ -113,7 +127,13 @@ function init() {
 }
 
 // Function call to initialize app
-init();
+init()
+.then(readMeData => {
+  return generateMarkdown(readMeData);
+})
+.catch(err => {
+  console.log(err);
+});
 
 // GIVEN a command-line application that accepts user input
 // WHEN I am prompted for information about my application repository

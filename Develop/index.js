@@ -14,7 +14,7 @@ const questions =
     validate: nameInput => {
       if (nameInput) {
         return true;
-      } else {
+      } else {~~
         console.log('Please enter your github username!');
         return false;
       }
@@ -61,6 +61,19 @@ const questions =
   },
   {
     type: 'input',
+    name: 'installation',
+    message: 'Please enter command that installs project dependencies',
+    validate: nameInput => {
+        if (nameInput) {
+          return true;
+        } else {
+          console.log('Please enter install command!');
+          return false;
+        }
+    }   
+  },
+  {
+    type: 'input',
     name: 'deployedSite',
     message: 'Provide a link to the deployed site. (Be sure to add http:// or https:// in front of the address)',
     validate: nameInput => {
@@ -93,6 +106,19 @@ const questions =
   },
   {
     type: 'input',
+    name: 'tests',
+    message: 'Please enter command that runs test on project',
+    validate: nameInput => {
+        if (nameInput) {
+          return true;
+        } else {
+          console.log('Please enter install command!');
+          return false;
+        }
+    }   
+  },
+  {
+    type: 'input',
     name: 'userInfo',
     message: 'Please enter information on how user can use the repo.',
     validate: nameInput => {
@@ -108,18 +134,23 @@ const questions =
 
 // TODO: Create a function to write README file
 function writeToFile(fileName, data) {
-  fs.writeFile(`${fileName}.md`, data, err => {
-    if(err){
-      reject(err);
-      return;
-    }
+  return new Promise((resolve,reject) => {
+    fs.writeFile(fileName, data, err => {
+        // if there's an error, reject promise and send error to .catch method
+        if(err){
+            reject(err);
+            // return out of the function to keep from resolving
+            return;
+        }
 
-    resolve({
-      ok: true,
-      message: 'Readme created!'
-    }
-  )}
-)}
+        // Iff all good, resolve and send to .this method
+        resolve({
+            ok: true,
+            message: 'Readme created!'
+        });
+    });
+});
+}
 
 // TODO: Create a function to initialize app
 function init() {
@@ -130,6 +161,9 @@ function init() {
 init()
 .then(readMeData => {
   return generateMarkdown(readMeData);
+})
+.then(readMeData => {
+  return writeToFile(`readme.md`, readMeData)
 })
 .catch(err => {
   console.log(err);
